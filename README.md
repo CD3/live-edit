@@ -16,7 +16,7 @@ existing vim plugins that attempt to do this (this is actually the original moti
 ## Example
 Let's say you want to see a live preview of a Markdown file while you edit it in a text editor. First, create a `Makefile` with an `update`
 target. `live-update` will pass the name of the file being edited to `make` through the `INFILE` variable, so this can be used in your `Makefile`.
-Here is an example that uses `pandoc` ([http://pandoc.org/]) to create a PDF from Markdown
+Here is an example that uses `pandoc` (http://pandoc.org/) to create a PDF from Markdown
 
     update:
       pandoc -f markdown -t latex -o $(basename $(INFILE)).pdf $(INFILE)
