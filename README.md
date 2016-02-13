@@ -13,6 +13,9 @@ really you can have any command or commands run when the file is updates. A few 
 The script can be used to provide a live markdown preview while editing the markdon in `vim` in a more flexible way than the
 existing vim plugins that attempt to do this (this is actually the original motivation for the script).
 
+## Dependencies
+Requires `entr` to be installed.
+
 ## Example
 Let's say you want to see a live preview of a Markdown file while you edit it in a text editor. First, create a `Makefile` with an `update`
 target. `live-update` will pass the name of the file being edited to `make` through the `INFILE` variable, so this can be used in your `Makefile`.
