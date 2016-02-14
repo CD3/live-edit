@@ -4,6 +4,9 @@
 
 INFILE ?= README.md
 
+install: update
+	install live-edit ~/bin
+
 update:
 	# Use pandoc to create a pdf from markdown
 	# This is used to create the README.pdf file in this directory.
