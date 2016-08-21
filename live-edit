@@ -1,5 +1,24 @@
 #! /bin/bash
 
+function print_usage(){
+cat << EOF
+Usage: live-edit [-f <makefile>] [<FILE>]
+
+Edit a file and run 'make update' on writes.
+
+This script is useful for editing document source files, such as LaTeX or Markdown, that must be compiled into a document.
+It opens the file in $EDITOR and then uses the 'entr' command to run 'make update' when the file changes.
+
+All you need to do is provide a 'Makefile' with an 'update' target that produces the document.
+
+Options:
+      -f --makefile FILE Use FILE instead of default makefile.
+
+EOF
+
+}
+
+
 # the getopt command is external to the shell. essentially what it
 # does is parse the command line parameters and rearrange them so
 # that all of the options are given before any of the arguments, and
@@ -13,39 +32,34 @@
 # a colon (:) after an option means it has a required argument
 # two colons (::) after an option means it has a optional argument
 
-function print_usage
-{
-cat << EOF
-Edit a file and run 'make update' on writes.
 
-This script is useful for editing document source files, such as LaTeX or Markdown, that must be compiled into a document.
-It opens the file in $EDITOR and then uses the 'entr' command to run 'make update' when the file changes.
-
-All you need to do is provide a 'Makefile' with an 'update' target that produces the document.
-EOF
-}
-
-NEW_COMMAND_LINE=$(getopt -o mh -l makefile,help -n '$(basename $0)' -- "$@")            # this creates a rearranged version of the command line
+NEW_COMMAND_LINE=$(getopt -o hf: -l help,makefile: -n '$(basename $0)' -- "$@")   # this creates a rearranged version of the command line
 if [ $? != 0 ] ; then echo "getopt returned an error, Terminating..." >&2 ; exit 1 ; fi
-eval set -- "$NEW_COMMAND_LINE"                                                          # this sets up positional parameters to the new command line
+eval set -- "$NEW_COMMAND_LINE"                                                                          # this sets up positional parameters to the new command line
 
 
 # now we can just manually loop through the positional parameters
+makefile="Makefile"
 while true ; do
   case "$1" in
-    -h|--help)
-        print_usage
-        exit
+    -h|--help )
+      print_usage
+      exit 1
+      shift 1
+      ;;
+    -f|--makefile )
+        makefile=$2
+        shift 2
         ;;
     --) shift ; break ;;
      *) echo "Unreconized option got through: '$1'" ; exit 1 ;;
   esac
 done
 
-
 # arguments start at $1...
 
-makefile="Makefile"
+
+
 if [ ! -e $makefile ] 
 then
   echo "no Makefile found. Please provide a Makefile with an 'update' target."
@@ -57,8 +71,7 @@ then
   export EDITOR=vim
 fi
 
-file=$1
-shift
+file=${1}
 
 # touch the file so to make sure it exists
 touch $file

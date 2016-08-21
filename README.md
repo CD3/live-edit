@@ -1,10 +1,10 @@
-# `live-update`
+# `live-edit`
 
 Edit a file with live updates
 
 This is a simple script that automates the process of updating a document while editing its source.
 It uses [`entr`](http://entrproject.org/) to run `make update` when the file being edited is modified, so
-really you can have any command or commands run when the file is updates. A few examples of when this might be useful:
+really you can have any command or commands run when the file is updated. A few examples of when this might be useful:
 
  - Regenerating a PDF when a LaTeX file is updated.
  - Create an HTML preview of a markdown document.
@@ -18,7 +18,7 @@ Requires `entr` to be installed.
 
 ## Example
 Let's say you want to see a live preview of a Markdown file while you edit it in a text editor. First, create a `Makefile` with an `update`
-target. `live-update` will pass the name of the file being edited to `make` through the `INFILE` variable, so this can be used in your `Makefile`.
+target. `live-edit` will pass the name of the file being edited to `make` through the `INFILE` variable, so this can be used in your `Makefile`.
 Here is an example that uses `pandoc` (http://pandoc.org/) to create a PDF from Markdown
 
     update:
